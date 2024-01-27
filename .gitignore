@@ -7,3 +7,9 @@ __pycache__
 .idea
 
 *.onnx
+
+temp_zip
+
+static/image
+
+static/txt
