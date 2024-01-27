@@ -8,8 +8,8 @@ __pycache__
 
 *.onnx
 
-temp_zip
+*.zip
 
-static/image
+*.JPG
 
-static/txt
+*.txt
