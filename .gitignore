@@ -10,6 +10,8 @@ __pycache__
 
 *.zip
 
-*.JPG
+static/images
+
+static/txt
 
 *.txt
