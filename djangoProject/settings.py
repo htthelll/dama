@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@wh!4%t_7##sg!gr$fe9gr9y26fu^!9+=%%kd*x=sdc)qfn7u4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -124,6 +124,6 @@ AUTH_USER_MODEL = 'users.UserInfo'
 
 # Celery Configuration
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
-
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'None'
 
 # CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'

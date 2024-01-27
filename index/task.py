@@ -1,8 +1,6 @@
 # tasks.py
 from celery import shared_task
-from .models import Image, MarkerTxtPath
-from mmdeploy.apis.utils import build_task_processor
-from mmdeploy.utils import get_input_shape, load_config
+from .models import Image, MarkerTxtPath, loaded_model, task_processor, input_shape
 import torch
 import cv2
 from djangoProject import settings
@@ -17,16 +15,7 @@ def process(marker):
     images = Image.objects.filter(marker=marker).order_by('marker')
     target_counts = []
 
-    deploy_cfg = 'static/depends/detection_onnxruntime_dynamic.py'
-    model_cfg = 'static/depends/test2.py'
-    device = 'cuda'
-    backend_model = ['static/depends/end2end.onnx']
-    deploy_cfg, model_cfg = load_config(deploy_cfg, model_cfg)
-    task_processor = build_task_processor(model_cfg, deploy_cfg, device)
-    model = task_processor.build_backend_model(backend_model)
-
     # process input image
-    input_shape = get_input_shape(deploy_cfg)
     for image in images:
         img = cv2.imread(str(image.image_path))
         model_inputs, _ = task_processor.create_input(str(image.image_path), input_shape)
@@ -34,8 +23,7 @@ def process(marker):
         # inference and calculate
         target_sum = 0
         with torch.no_grad():
-            result = model.test_step(model_inputs)
-        import numpy as np
+            result = loaded_model.test_step(model_inputs)
         bbox = result[0].pred_instances.bboxes.numpy()
         label = result[0].pred_instances.labels.numpy()
         scores = result[0].pred_instances.scores.numpy()

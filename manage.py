@@ -2,6 +2,8 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import threading
+from djangoProject.start_celery import start_celery
 
 
 def main():
@@ -19,4 +21,9 @@ def main():
 
 
 if __name__ == '__main__':
+    # from django.core.management import execute_from_command_line
+    #
+    # os.system('celery -A djangoProject worker -l info -P solo')
+    # execute_from_command_line(sys.argv)
+    threading.Thread(target=start_celery).start()
     main()
